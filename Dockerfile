@@ -1,10 +1,10 @@
 # Etapa 1: Construcción
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 # Establece el directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Copia el package.json y package-lock.json (si existe)
+# Copia el package.json y yarn.lock (si existe)
 COPY package.json yarn.lock ./
 
 # Instala las dependencias
@@ -16,11 +16,17 @@ COPY . .
 # Construye el proyecto
 RUN yarn build
 
-# Etapa 2: Configuración de Nginx
-FROM nginx:alpine
+# Empaqueta el proyecto como un archivo .tgz
+RUN yarn pack -o lib-react-layout-components.tgz
 
-# Copia los archivos de la construcción de la aplicación a la carpeta predeterminada de Nginx
-COPY --from=build /app/dist /usr/share/nginx/html
+# Etapa 2: Configuración de Nginx
+FROM nginx:alpine AS prod
+
+# Creamos un directorio para almacenar el archivo .tgz dentro del contenedor
+RUN mkdir -p /usr/share/nginx/html/packages
+
+# Copiamos el archivo .tgz generado desde la etapa de construcción
+COPY --from=build /app/lib-react-layout-components-v0.1.0.tgz /usr/share/nginx/html/packages/
 
 # Copia el archivo de configuración de Nginx personalizado si es necesario
 COPY nginx.conf /etc/nginx/conf.d/default.conf

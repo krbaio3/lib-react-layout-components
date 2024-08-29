@@ -9,6 +9,9 @@
 			"require": "./dist/layout-components.cjs.js"
 		}
 	},
+	"files": [
+		"dist"
+	],
 	"main": "dist/layout-components.cjs.js",
 	"module": "dist/layout-components.es.js",
 	"scripts": {
@@ -22,7 +25,9 @@
 		"release": "standard-version",
 		"release:major": "standard-version --release-as major",
 		"release:minor": "standard-version --release-as minor",
-		"release:patch": "standard-version --release-as patch"
+		"release:patch": "standard-version --release-as patch",
+		"docker:build": "docker build -t lib-react-layout-components:0.1.0 .",
+		"docker:run": "docker run -p 5555:80 lib-react-layout-components:0.1.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.8.3",
@@ -70,6 +75,5 @@
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
 		"react-router-dom": "^6.20.0"
-	},
-	"styles": "./dist/basic-style.css"
+	}
 }
