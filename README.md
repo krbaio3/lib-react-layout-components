@@ -1,88 +1,74 @@
-# lib-react-layout-components
+# Supabase Docker Setup
 
-`lib-react-layout-components` es una biblioteca de componentes de React diseñada para proporcionar una estructura de diseño modular. La biblioteca está empaquetada utilizando Vite y está lista para ser utilizada en proyectos de React.
+Este proyecto configura un entorno completo de Supabase utilizando Docker y Docker Compose. Incluye servicios esenciales como la base de datos, autenticación, almacenamiento y funcionalidades en tiempo real.
 
-## Estructura del Proyecto
+## Requisitos Previos
 
-El proyecto está organizado de la siguiente manera:
+- Docker: Asegúrate de tener Docker instalado en tu sistema.
+- Docker Compose: También es necesario tener Docker Compose.
 
-- **src/**
-  - **components/**
-    - `header.component.tsx` - Componente del encabezado.
-    - `footer.component.tsx` - Componente del pie de página.
-    - `layout.component.tsx` - Componente principal que organiza el diseño.
-    - `sidebar.component.tsx` - Componente de la barra lateral.
-  - **Demo/**
-    - Contiene la demo de los componentes.
-- **dist/** - Contiene los archivos empaquetados (`.js` y `.css`) listos para distribución.
-- **.lintstagedrc.mjs** - Configuración para linting y formateo automático de archivos.
-- **eslint.config.mjs** - Configuración de ESLint para el proyecto.
-- **nginx.conf** - Configuración de Nginx para servir el archivo `.tgz` de la biblioteca.
-- **tailwind.config.js** - Configuración de Tailwind CSS para estilos personalizados.
+## Configuración Inicial
 
-## Scripts Disponibles
+1. Clona este repositorio:
 
-En el archivo `package.json`, hay varios scripts definidos para ayudar en el desarrollo y la distribución de la biblioteca:
+   ````bash
+   	git clone https://github.com/tuusuario/supabase-docker-setup.git
+   	cd supabase-docker-setup
+   	```
 
-- **`build`**: Compila el proyecto utilizando TypeScript y Vite.
-- **`check`**: Realiza un chequeo del código usando Biome.
-- **`check:fix`**: Formatea el código utilizando Biome.
-- **`dev`**: Inicia un servidor de desarrollo utilizando Vite.
-- **`format`**: Aplica Prettier para formatear el código.
-- **`lint`**: Ejecuta ESLint para verificar y corregir problemas de estilo de código.
-- **`preview`**: Previsualiza la versión construida del proyecto.
-- **`release`**: Genera una nueva versión utilizando `standard-version`.
-- **`docker:build`**: Construye la imagen Docker del proyecto.
-- **`docker:run`**: Ejecuta el contenedor Docker y sirve la biblioteca a través de Nginx.
+   ````
 
-## Empaquetado y Distribución
+2. Abre el archivo `docker-compose.yml` y personaliza las siguientes variables de entorno:
 
-Para empaquetar la biblioteca en un archivo `.tgz`, puedes utilizar el siguiente comando:
+   - `POSTGRES_PASSWORD`: Contraseña del usuario de Postgres.
+   - `POSTGRES_USER`: Nombre de usuario de Postgres.
+   - `POSTGRES_DB`: Nombre de la base de datos de Postgres.
+   - `SUPABASE_PASSWORD`: Contraseña de Supabase.
+   - `GOTRUE_JWT_SECRET`: Secreto JWT para autenticación.
+   - `ANON_KEY`: Clave de anonimato para Supabase.
+   - `SERVICE_KEY`: Clave de servicio para Supabase.
+
+## Uso
+
+### Levantar los servicios
+
+Para iniciar los servicios, ejecuta:
 
 ```bash
-yarn pack
+docker-compose up -d
 ```
 
-Este comando generará un archivo .tgz que se puede distribuir e instalar en otros proyectos.
+## Verificar el estado
 
-## Servir el Archivo .tgz con Docker y Nginx
-
-El archivo .tgz se puede servir utilizando un contenedor Docker con Nginx. Sigue estos pasos:
-
-1. Construir la Imagen Docker:
+Puedes verificar si los contenedores están corriendo correctamente usando:
 
 ```bash
-yarn docker:build
+docker-compose ps
 ```
 
-2. Ejecutar el Contenedor:
+## Apagar los servicios
+
+Para detener y eliminar los contenedores, ejecuta:
 
 ```bash
-yarn docker:run
+docker-compose down
 ```
 
-3. Acceder al Archivo `.tgz`:
+## Personalización
 
-Una vez que el contenedor esté corriendo, puedes acceder al archivo `.tgz` en `http://localhost:5555/packages/lib-react-layout-components.tgz`.
+Puedes personalizar el archivo docker-compose.yml para agregar otros servicios de Supabase o modificar la configuración existente.
 
-## Configuración de ESLint
+## Solución de Problemas
 
-La configuración de ESLint se encuentra en el archivo `eslint.config.mjs` y está diseñada para garantizar la calidad del código en este proyecto. Incluye reglas para React, TypeScript, y otros plugins esenciales.
+### El servicio no se levanta
 
-## Configuración de Tailwind CSS
-
-El proyecto utiliza Tailwind CSS para los estilos, y la configuración personalizada se encuentra en `tailwind.config.js`. Puedes personalizar esta configuración según las necesidades de tu proyecto.
+- Verifica los logs con docker-compose logs.
+- Asegúrate de que no hay conflictos de puertos con otros servicios que se estén ejecutando en tu máquina.
 
 ## Contribuciones
 
-Si deseas contribuir a este proyecto, por favor sigue estos pasos:
-
-1. Realiza un fork del repositorio.
-2. Crea una nueva rama (git checkout -b feature/nueva-funcionalidad).
-3. Realiza tus cambios y haz commit (git commit -am 'Añadir nueva funcionalidad').
-4. Sube tu rama (git push origin feature/nueva-funcionalidad).
-5. Crea un pull request.
+Las contribuciones son bienvenidas. Puedes abrir un issue o enviar un pull request con tus mejoras.
 
 ## Licencia
 
-Este proyecto está bajo la Licencia MIT. Para más detalles, consulta el archivo LICENSE.
+Este proyecto está bajo la Licencia MIT.
